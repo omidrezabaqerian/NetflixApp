@@ -1,21 +1,27 @@
 package ir.omidrezabagherian.netflix.fragments
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import ir.omidrezabagherian.netflix.R
 import ir.omidrezabagherian.netflix.databinding.FragmentProfileLoginBinding
+import java.io.ByteArrayOutputStream
 
 class ProfileLoginFragment : Fragment(R.layout.fragment_profile_login) {
 
     lateinit var profileLoginBinding: FragmentProfileLoginBinding
     private lateinit var profileLoginNavController: NavController
+
+    lateinit var picture: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -31,11 +37,31 @@ class ProfileLoginFragment : Fragment(R.layout.fragment_profile_login) {
         val takePicture =
             registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { result ->
                 profileLoginBinding.imageviewUser.setImageBitmap(result)
+
+                val stream = ByteArrayOutputStream()
+                result!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                val imageByteArray = stream.toByteArray()
+                picture = Base64.encodeToString(imageByteArray, Base64.DEFAULT)
             }
 
         val findPicture =
             registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
                 profileLoginBinding.imageviewUser.setImageURI(result)
+
+                val path = profileLoginBinding.imageviewUser.drawable.toBitmap()
+
+                val stream = ByteArrayOutputStream()
+                path.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                val imageByteArray = stream.toByteArray()
+                picture = Base64.encodeToString(imageByteArray, Base64.DEFAULT)
+
+                /*val options = BitmapFactory.Options()
+                options.inSampleSize = 50
+                val path = BitmapFactory.decodeFile(result.path,options)
+                val stream = ByteArrayOutputStream()
+                path!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                val imageByteArray = stream.toByteArray()
+                picture = Base64.encodeToString(imageByteArray, Base64.DEFAULT)*/
             }
 
         profileLoginBinding.buttonOpenCamera.setOnClickListener {
@@ -83,6 +109,10 @@ class ProfileLoginFragment : Fragment(R.layout.fragment_profile_login) {
 
                 val sharedPrefEditor = sharedPref.edit()
 
+                if (picture.isNotEmpty()) {
+                    sharedPrefEditor.putString(SharedPreferences.PICTURE_KEY, picture)
+                }
+
                 sharedPrefEditor.putString(SharedPreferences.FULLNAME_KEY, fullname)
                 sharedPrefEditor.putString(SharedPreferences.EMAIL_KEY, email)
                 sharedPrefEditor.putString(SharedPreferences.USERNAME_KEY, username)
@@ -93,14 +123,9 @@ class ProfileLoginFragment : Fragment(R.layout.fragment_profile_login) {
                 val email = sharedPref?.getString(SharedPreferences.EMAIL_KEY, "")
                 val username = sharedPref?.getString(SharedPreferences.USERNAME_KEY, "")
 
-                Toast.makeText(activity, fullname.toString(), Toast.LENGTH_SHORT).show()
-                Toast.makeText(activity, email.toString(), Toast.LENGTH_SHORT).show()
-                Toast.makeText(activity, username.toString(), Toast.LENGTH_SHORT).show()
-
                 profileLoginNavController.navigate(R.id.profileInfoFragment)
 
             }
-
 
         }
 
@@ -127,19 +152,10 @@ class ProfileLoginFragment : Fragment(R.layout.fragment_profile_login) {
                 username != ""
             ) {
                 profileLoginNavController.navigate(R.id.profileInfoFragment)
-                Toast.makeText(activity, "موفق", Toast.LENGTH_SHORT).show()
-
-                Toast.makeText(activity, fullname.toString(), Toast.LENGTH_SHORT).show()
-                Toast.makeText(activity, email.toString(), Toast.LENGTH_SHORT).show()
-                Toast.makeText(activity, username.toString(), Toast.LENGTH_SHORT).show()
             }
 
         } catch (e: Exception) {
-            Toast.makeText(activity, "نا موفق", Toast.LENGTH_SHORT).show()
-
-            Toast.makeText(activity, fullname.toString(), Toast.LENGTH_SHORT).show()
-            Toast.makeText(activity, email.toString(), Toast.LENGTH_SHORT).show()
-            Toast.makeText(activity, username.toString(), Toast.LENGTH_SHORT).show()
+            Log.i("AppException",e.toString())
         }
 
     }

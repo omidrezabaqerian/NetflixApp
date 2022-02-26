@@ -1,7 +1,9 @@
 package ir.omidrezabagherian.netflix.fragments
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -28,11 +30,18 @@ class ProfileInfoFragment : Fragment(R.layout.fragment_profile_info) {
 
         profileInfoNavController = profileInfoNavHostFragment.navController
 
+        val picture = sharedPref?.getString(SharedPreferences.PICTURE_KEY,"").toString()
         val fullName =
             sharedPref?.getString(SharedPreferences.FULLNAME_KEY, "No FullName").toString()
         val email = sharedPref?.getString(SharedPreferences.EMAIL_KEY, "No Email").toString()
         val userName =
             sharedPref?.getString(SharedPreferences.USERNAME_KEY, "No UserName").toString()
+
+        if (picture.isNotEmpty()){
+            val decodedByte = Base64.decode(picture,0)
+            val image = BitmapFactory.decodeByteArray(decodedByte,0,decodedByte.size)
+            profileInfoBinding.imageviewUser.setImageBitmap(image)
+        }
 
         profileInfoBinding.textviewFullname.text = fullName
         profileInfoBinding.textviewEmail.text = email

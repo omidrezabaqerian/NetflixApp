@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import ir.omidrezabagherian.netflix.R
@@ -24,7 +23,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         homeBinding = FragmentHomeBinding.bind(requireView())
         videoHandler = VideoHandler(this)
         addItemToRecyclerView(this.requireContext())
-        setVideos()
     }
 
     private fun addItemToRecyclerView(context: Context) {
@@ -63,8 +61,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val videoImage20 = context.resources.getDrawable(R.drawable.venom, null) as BitmapDrawable
         val videoImage21 = context.resources.getDrawable(R.drawable.vikings, null) as BitmapDrawable
 
-        Toast.makeText(activity, recyclerViewIsEnable.toString(), Toast.LENGTH_SHORT).show()
-
         if (!recyclerViewIsEnable) {
             videoHandler.addVideo("Black Widow", Favorite.NO_FAVORITE, videoImage1.bitmap)
             videoHandler.addVideo("Breaking Bad", Favorite.NO_FAVORITE, videoImage2.bitmap)
@@ -91,15 +87,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             videoHandler.addVideo("Suicide Squad 2", Favorite.NO_FAVORITE, videoImage19.bitmap)
             videoHandler.addVideo("Venom", Favorite.NO_FAVORITE, videoImage20.bitmap)
             videoHandler.addVideo("Vikings", Favorite.NO_FAVORITE, videoImage21.bitmap)
+
         }
     }
 
     private fun setVideos() {
-        val sharedPref =
-            activity?.getSharedPreferences(SharedPreferences.FILE_NAME, Context.MODE_PRIVATE)
-        
         recyclerViewIsEnable = true
+
         homeBinding.recyclerviewHome.adapter = HomeAdapter(videoHandler.getAllVideos(), this)
         homeBinding.recyclerviewHome.layoutManager = GridLayoutManager(requireContext(), 3)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setVideos()
     }
 }
