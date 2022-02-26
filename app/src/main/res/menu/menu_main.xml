@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_baseline_home_menu"
+        android:title="@string/text_home_menu" />
+    <item
+        android:id="@+id/menu_coming_soon"
+        android:icon="@drawable/ic_baseline_coming_soon_menu"
+        android:title="@string/text_coming_soon_menu" />
+    <item
+        android:id="@+id/menu_favorite"
+        android:icon="@drawable/ic_baseline_favorite_menu"
+        android:title="@string/text_favorite_menu" />
+    <item
+        android:id="@+id/menu_profile"
+        android:icon="@drawable/ic_baseline_profile_menu"
+        android:title="@string/text_profile_menu" />
+</menu>

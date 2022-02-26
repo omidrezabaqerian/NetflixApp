@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/comingSoonFragment"
+        android:name="ir.omidrezabagherian.netflix.fragments.ComingSoonFragment"
+        android:label="ComingSoonFragment" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="ir.omidrezabagherian.netflix.fragments.FavoriteFragment"
+        android:label="FavoriteFragment" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="ir.omidrezabagherian.netflix.fragments.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/profileInfoFragment"
+        android:name="ir.omidrezabagherian.netflix.fragments.ProfileInfoFragment"
+        android:label="ProfileInfoFragment" />
+    <fragment
+        android:id="@+id/profileLoginFragment"
+        android:name="ir.omidrezabagherian.netflix.fragments.ProfileLoginFragment"
+        android:label="ProfileLoginFragment" />
+</navigation>

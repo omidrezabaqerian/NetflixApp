@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Netflix</string>
+
+    <string name="text_home_menu">Home</string>
+    <string name="text_coming_soon_menu">Coming Soon</string>
+    <string name="text_favorite_menu">Favorite</string>
+    <string name="text_profile_menu">Profile</string>
+
+
+
+</resources>
